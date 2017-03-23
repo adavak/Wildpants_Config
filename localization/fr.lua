@@ -3,11 +3,12 @@
 		***
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'frFR')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'frFR')
 if not L then return end
 
 -- general
-L.GeneralDesc = 'Configuration des options générales de Bagnon'
+L.GeneralDesc = 'Configuration des options générales de ADDON'
 L.Locked = 'Bloquer la position des fenêtres'
 L.Fading = 'Activer le fading des fenêtres'
 L.TipCount = 'Activer l\'info-bulle du compteur d\'objets'
@@ -17,7 +18,7 @@ L.DisplayBlizzard = 'Afficher les cadres de Blizzard pour les sacs désactivés'
 
 -- frame
 L.FrameSettings = 'Options des Fenêtres'
-L.FrameSettingsDesc = 'Configuration des options spécifiques à une fenêtre de Bagnon'
+L.FrameSettingsDesc = 'Configuration des options spécifiques à une fenêtre de ADDON'
 L.Frame = 'Fenêtre'
 L.Enabled = 'Activer'
 --L.CharacterSpecific = 'Character Specific Settings'

@@ -3,13 +3,14 @@
 		Credits/Blame: Phanx
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'esES') or LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'esMX')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'esES') or LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'esMX')
 if not L then return end
 
 -- general
 L.GeneralDesc = 'Funciones generales que se puedan activados o desactivados como tu prefieras.'
 L.Locked = 'Bloquear posiciones de marcos'
-L.Fading = 'Activar desaparición de ventanas'
+L.Fading = 'Activar efeitos de desaparición'
 L.TipCount = 'Mostrar recuento de objetos en tooltips'
 L.FlashFind = 'Activar Flash Find'
 L.EmptySlots = 'Mostrar un fondo para las ranuras de objetos vacías'
@@ -17,7 +18,7 @@ L.DisplayBlizzard = 'Mostrar ventanas de Blizzard para bolsas desactivadas'
 
 -- frame
 L.FrameSettings = 'Opciones de ventana'
-L.FrameSettingsTitle = 'Opciones específicas para una ventana de Bagnon'
+L.FrameSettingsDesc = 'Opciones específicas para una ventana de ADDON'
 L.Frame = 'Ventana'
 L.Enabled = 'Activar esta ventana'
 L.CharacterSpecific = 'Ajustes del personaje'

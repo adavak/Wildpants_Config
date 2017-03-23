@@ -3,11 +3,12 @@
 		Credits/Blame: Phanx
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'deDE')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'deDE')
 if not L then return end
 
 -- general
-L.GeneralDesc = 'Allgemeine Einstellungen für Bagnon anpassen'
+L.GeneralDesc = 'Allgemeine Einstellungen für ADDON anpassen'
 L.Locked = 'Fensterpositionen sperren'
 L.Fading = 'Ermögliche Ausblenden des Fensters'
 L.TipCount = 'Ermögliche tooltip item count'
@@ -17,7 +18,7 @@ L.DisplayBlizzard = 'Blizzard Fenster für die deaktivierten Taschen anzeigen'
 
 -- frame
 L.FrameSettings = 'Fenstereinstellungen'
-L.FrameSettingsDesc = 'Einstellungen für ein bestimmtes Bagnon Fenster anpassen'
+L.FrameSettingsDesc = 'Einstellungen für ein bestimmtes ADDON Fenster anpassen'
 L.Frame = 'Fenster'
 L.Enabled = 'Aktiviert'
 L.CharacterSpecific = 'Charakterspezifische Einstellungen'

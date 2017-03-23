@@ -3,11 +3,15 @@
 		Options group widget template
 --]]
 
-local L = LibStub('AceLocale-3.0'):GetLocale('Bagnon-Config')
-local Options = LibStub('Poncho-1.0')(nil, 'BagnonOptions', nil, nil, SushiGroup)
-Options.sets = Bagnon.sets
+local CONFIG, Config = ...
+local ADDON = GetAddOnMetadata(CONFIG, 'X-Dependencies')
+local L = LibStub('AceLocale-3.0'):GetLocale(CONFIG)
+local Addon = _G[ADDON]
+
+local Options = LibStub('Poncho-1.0')(nil, CONFIG, nil, nil, SushiGroup)
 Options.frameID = 'inventory'
-Bagnon.Options = Options
+Options.sets = Addon.sets
+Addon.Options = Options
 
 
 --[[ Constructor ]]--
@@ -41,7 +45,7 @@ end
 
 function Options:CreateHeader(text, font, underline)
 	local child = self:Create('Header')
-	child:SetText(text)
+	child:SetText(text:gsub('ADDON', ADDON))
 	child:SetUnderlined(underline)
 	child:SetWidth(585)
 	child:SetFont(font)
@@ -61,7 +65,7 @@ function Options:CreateCheck(arg, onInput)
 	local child = self:CreateInput('CheckButton', arg)
 	child:SetCall('OnInput', function(self, v)
 		self.sets[arg] = v
-		Bagnon:UpdateFrames()
+		Addon:UpdateFrames()
 
 		if onInput then
 			onInput(v)
@@ -75,7 +79,7 @@ function Options:CreatePercentSlider(arg, ...)
 	local child = self:CreateSlider(arg, ...)
 	child:SetCall('OnInput', function(self,v)
 		self.sets[arg] = v/100
-		Bagnon:UpdateFrames()
+		Addon:UpdateFrames()
 	end)
 
 	child:SetValue(self.sets[arg] * 100)
@@ -89,7 +93,7 @@ function Options:CreateSlider(arg, min, max)
 	child:SetRange(min, max)
 	child:SetCall('OnInput', function(self,v)
 		self.sets[arg] = v
-		Bagnon:UpdateFrames()
+		Addon:UpdateFrames()
 	end)
 
 	return child
@@ -103,7 +107,7 @@ function Options:CreateColor(arg)
 	child:SetText(L[arg:gsub('^.', strupper)])
 	child:SetCall('OnInput', function(_, r,g,b,a)
 		color[1], color[2], color[3], color[4] = r,g,b,a
-		Bagnon:UpdateFrames()
+		Addon:UpdateFrames()
 	end)
 
 	return child
@@ -114,15 +118,20 @@ function Options:CreateDropdown(arg, ...)
 	drop:AddLines(...)
 	drop:SetCall('OnInput', function(self, v)
 		self.sets[arg] = v
-		Bagnon:UpdateFrames()
+		Addon:UpdateFrames()
 	end)
 end
 
 function Options:CreateInput(type, arg)
+	local title = arg:gsub('^.', strupper)
 	local child = self:Create(type)
-	child:SetLabel(L[arg:gsub('^.', strupper)])
+	child:SetLabel(L[title])
 	child:SetValue(self.sets[arg])
 	child.sets = self.sets
+
+	if L[title .. 'Tip'] then
+		child:SetTip(L[title .. 'Tip'])
+	end
 
 	return child
 end

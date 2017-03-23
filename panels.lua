@@ -3,9 +3,13 @@
 		Configuration panels
 --]]
 
-local L = LibStub('AceLocale-3.0'):GetLocale('Bagnon-Config')
+local CONFIG, Config = ...
+local ADDON = GetAddOnMetadata(CONFIG, 'X-Dependencies')
+local L = LibStub('AceLocale-3.0'):GetLocale(CONFIG)
+local Addon = _G[ADDON]
+
 local SLOT_COLOR_TYPES = {}
-for id, name in pairs(Bagnon.BAG_TYPES) do
+for id, name in pairs(Addon.BAG_TYPES) do
 	tinsert(SLOT_COLOR_TYPES, name)
 end
 
@@ -13,13 +17,13 @@ sort(SLOT_COLOR_TYPES)
 tinsert(SLOT_COLOR_TYPES, 1, 'normal')
 
 local SetProfile = function(profile)
-	Bagnon:SetProfile(profile)
-	Bagnon.profile = Bagnon:GetProfile()
-	Bagnon:UpdateFrames()
-	Bagnon.FrameOptions:Update()
+	Addon:SetProfile(profile)
+	Addon.profile = Addon:GetProfile()
+	Addon:UpdateFrames()
+	Addon.GeneralOptions:Update()
 end
 
-StaticPopupDialogs['Bagnon_ConfirmGlobals'] = {
+StaticPopupDialogs[CONFIG .. '_ConfirmGlobals'] = {
 	text = 'Are you sure you want to disable specific settings for this character? All specific settings will be lost.',
 	OnAccept = function() SetProfile(nil) end,
 	whileDead = 1, exclusive = 1, hideOnEscape = 1,
@@ -30,16 +34,30 @@ StaticPopupDialogs['Bagnon_ConfirmGlobals'] = {
 
 --[[ Panels ]]--
 
-Bagnon.GeneralOptions = Bagnon.Options:NewPanel(nil, 'Bagnon', L.GeneralDesc, function(self)
+Addon.GeneralOptions = Addon.Options:NewPanel(nil, ADDON, L.GeneralDesc, function(self)
 	self:CreateCheck('locked')
-	self:CreateCheck('fading')
 	self:CreateCheck('tipCount')
 	self:CreateCheck('flashFind')
-	self:CreateCheck('emptySlots')
+
+	if Config.fading then
+		self:CreateCheck('fading')
+	end
+	
 	self:CreateCheck('displayBlizzard', ReloadUI)
+
+	local global = self:Create('Check')
+	global:SetLabel(L.CharacterSpecific)
+	global:SetValue(Addon:GetSpecificProfile())
+	global:SetCall('OnInput', function(_, v)
+		if Addon:GetSpecificProfile() then
+			StaticPopup_Show(CONFIG .. '_ConfirmGlobals')	
+		else
+			SetProfile(CopyTable(Addon.sets.global))
+		end
+	end)
 end)
 
-Bagnon.FrameOptions = Bagnon.Options:NewPanel('Bagnon', L.FrameSettings, L.FrameSettingsDesc, function(self)
+Addon.FrameOptions = Addon.Options:NewPanel(ADDON, L.FrameSettings, L.FrameSettingsDesc, function(self)
 	local frames = self:Create('Dropdown')
 	frames:SetLabel(L.Frame)
 	frames:SetValue(self.frameID)
@@ -49,58 +67,58 @@ Bagnon.FrameOptions = Bagnon.Options:NewPanel('Bagnon', L.FrameSettings, L.Frame
 		self.frameID = v
 	end)
 	
-	if GetAddOnEnableState(UnitName('player'), 'Bagnon_GuildBank') >= 2 then
+	if GetAddOnEnableState(UnitName('player'), ADDON .. '_GuildBank') >= 2 then
 		frames:AddLine('guild', GUILD_BANK)
 	end
 	
-	if GetAddOnEnableState(UnitName('player'), 'Bagnon_VoidStorage') >= 2 then
+	if GetAddOnEnableState(UnitName('player'), ADDON .. '_VoidStorage') >= 2 then
 		frames:AddLine('vault', VOID_STORAGE)
 	end
 
-	local global = self:Create('Check')
-	global:SetLabel(L.CharacterSpecific)
-	global:SetValue(Bagnon:GetSpecificProfile())
-	global:SetCall('OnInput', function(_, v)
-		if Bagnon:GetSpecificProfile() then
-			StaticPopup_Show('Bagnon_ConfirmGlobals')	
-		else
-			SetProfile(CopyTable(Bagnon.sets.global))
-		end
-	end)
-
-	self.sets = Bagnon.profile[self.frameID]
+	self.sets = Addon.profile[self.frameID]
 	self:CreateCheck('enabled'):SetDisabled(self.frameID ~= 'inventory' and self.frameID ~= 'bank')
 
 	if self.sets.enabled then
-		if self.frameID == 'bank' then
-			self:CreateCheck('exclusiveReagent')
-		end
+		self:CreateCheck('actPanel')
 
 		-- Display
 		self:CreateHeader(DISPLAY, 'GameFontHighlight', true)
-		self:CreateRow(70, function(row)
-			if self.frameID ~= 'guild' then
-				row:CreateCheck('bagFrame')
-				row:CreateCheck('sort')
-			end
-			
-			row:CreateCheck('search')
-			row:CreateCheck('options')
-			row:CreateCheck('broker')
+		self:CreateRow(Config.displayRowHeight, function(row)
+			if Config.components then
+				if self.frameID ~= 'guild' then
+					row:CreateCheck('bagFrame')
+					row:CreateCheck('sort')
+				end
+				
+				row:CreateCheck('search')
+				row:CreateCheck('options')
+				row:CreateCheck('broker')
 
-			if self.frameID ~= 'vault' then
-				row:CreateCheck('money')
+				if self.frameID ~= 'vault' then
+					row:CreateCheck('money')
+				end
+			end
+
+			if Config.tabs then
+				row:CreateCheck('leftTabs')
 			end
 		end)
 
 		-- Appearance
 		self:CreateHeader(L.Appearance, 'GameFontHighlight', true)
 		self:CreateRow(70, function(row)
-			row:CreateColor('color')
-			row:CreateColor('borderColor')
+			if Config.colors then
+				row:CreateColor('color')
+				row:CreateColor('borderColor')
+			end
+
 			row:CreateCheck('reverseBags')
 			row:CreateCheck('reverseSlots')
 			row:CreateCheck('bagBreak')
+
+			if self.frameID == 'bank' then
+				row:CreateCheck('exclusiveReagent')
+			end
 		end)
 
 		self:CreateRow(162, function(row)
@@ -114,18 +132,21 @@ Bagnon.FrameOptions = Bagnon.Options:NewPanel('Bagnon', L.FrameSettings, L.Frame
 				self.sets.x =  self.sets.x / ratio
 				self.sets.y =  self.sets.y / ratio
 				self.sets.scale = new
-				Bagnon:UpdateFrames()
+				Addon:UpdateFrames()
 			end)
 
 			row:Break()
-			row:CreatePercentSlider('itemScale', 20, 300)
+			row:CreatePercentSlider('itemScale', 20, 200)
 			row:CreateSlider('spacing', -15, 15)
-			row:CreateSlider('columns', 1, 50)
+
+			if Config.columns then
+				row:CreateSlider('columns', 1, 50)
+			end
 		end).bottom = -50
 	end
 end)
 
-Bagnon.DisplayOptions = Bagnon.Options:NewPanel('Bagnon', L.DisplaySettings, L.DisplaySettingsDesc, function(self)
+Addon.DisplayOptions = Addon.Options:NewPanel(ADDON, L.DisplaySettings, L.DisplaySettingsDesc, function(self)
 	self:CreateHeader(L.DisplayInventory, 'GameFontHighlight', true)
 	for i, event in ipairs {'Bank', 'Auction', 'Guildbank', 'Mail', 'Player', 'Trade', 'Gems', 'Craft'} do
 		self:CreateCheck('display' .. event)
@@ -137,7 +158,7 @@ Bagnon.DisplayOptions = Bagnon.Options:NewPanel('Bagnon', L.DisplaySettings, L.D
 	end
 end)
 
-Bagnon.ColorOptions = Bagnon.Options:NewPanel('Bagnon', L.ColorSettings, L.ColorSettingsDesc, function(self)
+Addon.ColorOptions = Addon.Options:NewPanel(ADDON, L.ColorSettings, L.ColorSettingsDesc, function(self)
 	self:CreateCheck('glowQuality')
 	self:CreateCheck('glowNew')
 	self:CreateCheck('glowQuest')
@@ -152,7 +173,7 @@ Bagnon.ColorOptions = Bagnon.Options:NewPanel('Bagnon', L.ColorSettings, L.Color
 				self:CreateColor(name .. 'Color').right = 144
 			end
 		end)
-
-		self:CreatePercentSlider('glowAlpha', 1, 100):SetWidth(585)
 	end
+
+	self:CreatePercentSlider('glowAlpha', 1, 100):SetWidth(585)
 end)

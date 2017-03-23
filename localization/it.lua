@@ -3,11 +3,12 @@
 		***
 ]]--
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'itIT')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'itIT')
 if not L then return end
 
 -- general
-L.GeneralDesc = 'Impostazioni generali di configurazioni per Bagnon.'
+L.GeneralDesc = 'Impostazioni generali di configurazioni per ADDON.'
 L.Locked = 'Blocca la posizione della finestra.'
 L.Fading = 'Attiva opacità finestra.'
 L.TipCount = 'Attiva conteggio degli oggetti.'
@@ -17,7 +18,7 @@ L.EmptySlots = 'Mostra uno sfondo per gli scomparti vuoti.'
 
 -- frame
 L.FrameSettings = 'Impostazioni finestre'
-L.FrameSettingsDesc = 'Configurazioni specifiche per le finestre di Bagnon.'
+L.FrameSettingsDesc = 'Configurazioni specifiche per le finestre di ADDON.'
 L.Frame = 'Finestra'
 L.Enabled = 'Attiva la finestra'
 --L.CharacterSpecific = 'Character Specific Settings'
@@ -48,7 +49,7 @@ L.Alpha = 'Opacità'
 
 -- auto display
 L.DisplaySettings = 'Mostra automaticamente'
-L.DisplaySettingsDesc = 'Condizioni per mostrare automaticamente Bagnon.'
+L.DisplaySettingsDesc = 'Condizioni per mostrare automaticamente ADDON.'
 L.DisplayInventory = 'Mostra l\'inventario'
 L.CloseInventory = 'Chiudi l\'Inventario'
 

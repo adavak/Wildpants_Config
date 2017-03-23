@@ -3,24 +3,25 @@
 		***
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'ptBR')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'ptBR')
 if not L then return end
 
 -- general
-L.GeneralDesc = 'Configuração geral de Bagnon'
+L.GeneralDesc = 'Configuração geral de ADDON'
 L.Locked = 'Bloquear posição das janelas'
---L.Fading = 'Frame Fading'
-L.TipCount = 'Ativar contagem de itens nas dicas de interface'
+L.Fading = 'Efeitos de desvanecimento'
+L.TipCount = 'Ativar contagem de itens nas dicas'
 L.FlashFind = 'Ativar Flash Find'
 L.EmptySlots = 'Mostrar fundo em espaços para itens vazios'
 L.DisplayBlizzard = 'Mostrar janelas da Blizzard para sacos desligados'
 
 -- frame
 L.FrameSettings = 'Preferências de Janela'
-L.FrameSettingsDesc = 'Configuração específica para uma janela de Bagnon'
+L.FrameSettingsDesc = 'Configuração específica para uma janela de ADDON'
 L.Frame = 'Janela'
 L.Enabled = 'Ativar'
---L.CharacterSpecific = 'Character Specific Settings'
+L.CharacterSpecific = 'Preferências Específicas por Personagem'
 --L.ExclusiveReagent = 'Separate Reagent Bank'
 
 L.BagFrame = 'Lista de sacos'
@@ -69,11 +70,11 @@ L.CloseVendor = 'quando abandonar um vendedor'
 -- colors
 L.ColorSettings = 'Preferências de Cor'
 L.ColorSettingsDesc = 'Preferências de cor para os compartimentos para itens'
---L.GlowQuality = 'Highlight Items by Quality' 
-L.GlowNew = 'Realçar itens por qualidade' 
+L.GlowQuality = 'Realçar itens por qualidade' 
+L.GlowNew = 'Realçar novos itens' 
 L.GlowQuest = 'Realçar itens de missão'
 L.GlowUnusable = 'Realçar itens inutilizáveis'
---L.GlowSets = 'Highlight Equipment Set Items'
+L.GlowSets = 'Realçar itens de conjunto'
 L.ColorSlots = 'Colorir os espaços por tipo de saco'
 
 L.NormalColor = 'Espaços normais'

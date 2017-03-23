@@ -3,7 +3,8 @@
 		***
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'zhTW')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'zhTW')
 if not L then return end
 
 -- general
@@ -17,7 +18,7 @@ L.DisplayBlizzard = '隱藏的背包顯示為內建框架'
 
 -- frame
 L.FrameSettings = '框架設定'
-L.FrameSettingsDesc = '設定Bagnon框架。'
+L.FrameSettingsDesc = '設定ADDON框架。'
 L.Frame = '框架'
 L.Enabled = '啟用框架'
 --L.CharacterSpecific = 'Character Specific Settings'
@@ -68,7 +69,7 @@ L.CloseVendor = '離開商人'
 
 -- colors
 L.ColorSettings = '顏色設定'
-L.ColorSettingsDesc = '讓你設定在Bagnon框架裡較簡單辨識物品槽位。'
+L.ColorSettingsDesc = '讓你設定在ADDON框架裡較簡單辨識物品槽位。'
 L.GlowQuality = '根據品質高亮物品' 
 L.GlowNew = '高亮新物品'
 L.GlowQuest = '高亮任務物品'

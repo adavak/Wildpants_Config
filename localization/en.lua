@@ -4,12 +4,13 @@
 		***
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'enUS', true)
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'enUS', true, 'raw')
 
 -- general
-L.GeneralDesc = 'General features that can be toggled depending on your preferences.'
+L.GeneralDesc = 'These are general features that can be toggled depending on your preferences.'
 L.Locked = 'Lock Frames'
-L.Fading = 'Frame Fading'
+L.Fading = 'Fading Effects'
 L.TipCount = 'Tooltip Item Count'
 L.FlashFind = 'Flash Find'
 L.EmptySlots = 'Display Background on Empty Slots'
@@ -17,11 +18,15 @@ L.DisplayBlizzard = 'Display Blizzard Frames for Hidden Bags'
 
 -- frame
 L.FrameSettings = 'Frame Settings'
-L.FrameSettingsDesc = 'Configuration settings specific to a Bagnon frame.'
+L.FrameSettingsDesc = 'These are configuration settings specific to a ADDON frame.'
 L.Frame = 'Frame'
 L.Enabled = 'Enable Frame'
 L.CharacterSpecific = 'Character Specific Settings'
-L.ExclusiveReagent = 'Separate Reagent Bank'
+L.ActPanel = 'Act as Standard Panel'
+L.ActPanelTip = [[
+If enabled, this panel will automatically position
+itself as the standard ones do, such as the |cffffffffSpellbook|r
+or the |cffffffffDungeon Finder|r, and will not be movable.]]
 
 L.BagFrame = 'Bag List'
 L.Money = 'Money'
@@ -29,6 +34,11 @@ L.Broker = 'Databroker Plugins'
 L.Sort = 'Sort Button'
 L.Search = 'Search Toggle'
 L.Options = 'Options Button'
+L.ExclusiveReagent = 'Separate Reagent Bank'
+L.LeftTabs = 'Rulesets on Left'
+L.LeftTabsTip = [[
+If enabled, the side tabs will be
+displayed on the left side of the panel.]]
 
 L.Appearance = 'Appearance'
 L.Layer = 'Layer'
@@ -68,7 +78,7 @@ L.CloseVendor = 'Leaving a Vendor'
 
 -- colors
 L.ColorSettings = 'Color Settings'
-L.ColorSettingsDesc = 'These settings allow you to change how item slots are presented on Bagnon frames for easier identification.'
+L.ColorSettingsDesc = 'These settings allow you to change how item slots are presented on ADDON frames for easier identification.'
 L.GlowQuality = 'Highlight Items by Quality'
 L.GlowNew = 'Highlight New Items'
 L.GlowQuest = 'Highlight Quest Items'

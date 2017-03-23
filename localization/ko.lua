@@ -1,8 +1,9 @@
 ﻿--[[
-	Bagnon Config Localization: Korean
+	ADDON Config Localization: Korean
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'koKR')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'koKR')
 if not L then return end
 
 -- general
@@ -16,9 +17,9 @@ L.DisplayBlizzard = '숨겨진 가방을 보기 위해 블리자드 프레임을
 
 -- frame
 L.FrameSettings = '창 설정'
-L.FrameSettingsDesc = 'Bagnon 프레임에 특화된 설정'
+L.FrameSettingsDesc = 'ADDON 프레임에 특화된 설정'
 L.Frame = '창'
-L.Enabled = 'Bagnon 애드온 사용'
+L.Enabled = '애드온 사용'
 L.CharacterSpecific = '캐릭터 개별 설정'
 L.ExclusiveReagent = '재료 은행 별도 표시'
 

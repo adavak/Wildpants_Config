@@ -3,7 +3,8 @@
 		***
 --]]
 
-local L = LibStub('AceLocale-3.0'):NewLocale('Bagnon-Config', 'ruRU')
+local CONFIG, Config = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(CONFIG, 'ruRU')
 if not L then return end
 
 -- general
@@ -17,7 +18,7 @@ L.DisplayBlizzard = 'Открывать стандартные окна Blizzard
 
 -- frame
 L.FrameSettings = 'Настройки окна'
-L.FrameSettingsDesc = 'Параметры конфигурации для конкретного окна Bagnon.'
+L.FrameSettingsDesc = 'Параметры конфигурации для конкретного окна ADDON.'
 L.Frame = 'Окно'
 L.Enabled = 'Включить окна'
 L.CharacterSpecific = 'Настройки для текущего персонажа'
@@ -68,7 +69,7 @@ L.CloseVendor = 'При закрытии окна продавца'
 
 -- colors
 L.ColorSettings = 'Настройка окраски'
-L.ColorSettingsDesc = 'Эти параметры позволяют изменять рамки ячеек предметов в Bagnon для удобной идентификации.'
+L.ColorSettingsDesc = 'Эти параметры позволяют изменять рамки ячеек предметов в ADDON для удобной идентификации.'
 L.GlowQuality = 'Подсвечивать рамки предметов по их качеству' 
 L.GlowNew = 'Подсвечивать рамки новых предметов' 
 L.GlowQuest = 'Подсвечивать рамки предметов для заданий'
