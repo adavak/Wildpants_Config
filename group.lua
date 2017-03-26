@@ -4,9 +4,8 @@
 --]]
 
 local CONFIG, Config = ...
-local ADDON = GetAddOnMetadata(CONFIG, 'X-Dependencies')
+local ADDON, Addon = Config.addon, _G[Config.addon]
 local L = LibStub('AceLocale-3.0'):GetLocale(CONFIG)
-local Addon = _G[ADDON]
 
 local Options = LibStub('Poncho-1.0')(nil, CONFIG, nil, nil, SushiGroup)
 Options.frameID = 'inventory'
@@ -59,6 +58,37 @@ function Options:CreateRow(height, content)
 	group:SetHeight(height)
 	group:SetChildren(content)
 	return group
+end
+
+function Options:CreateFauxScroll(maxEntries, entryHeight, content)
+	local group = self:Bind(SushiFauxScrollGroup(self))
+	group.sets = self.sets
+	group:SetWidth(self:GetWidth())
+	group:SetMaxDisplayed(13)
+	group:SetEntrySize(26)
+	group:SetChildren(content)
+	return group
+end
+
+function Options:CreateFramesDropdown()
+	local drop = self:Create('Dropdown')
+	drop:SetValue(self.frameID)
+	drop:SetLabel(L.Frame)
+	drop:AddLine('inventory', INVENTORY_TOOLTIP)
+	drop:AddLine('bank', BANK)
+	drop:SetCall('OnInput', function(_, v)
+		self.frameID = v
+	end)
+	
+	if GetAddOnEnableState(UnitName('player'), ADDON .. '_GuildBank') >= 2 then
+		drop:AddLine('guild', GUILD_BANK)
+	end
+	
+	if GetAddOnEnableState(UnitName('player'), ADDON .. '_VoidStorage') >= 2 then
+		drop:AddLine('vault', VOID_STORAGE)
+	end
+
+	return drop
 end
 
 function Options:CreateCheck(arg, onInput)

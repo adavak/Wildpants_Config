@@ -98,3 +98,7 @@ L.TackleColor = 'Tackle Box Color'
 L.RefrigeColor = 'Refrigerator Color'
 L.ReagentColor = 'Reagent Bank Color'
 L.GlowAlpha = 'Highlight Brightness'
+
+-- rulesets
+L.RuleSettings = 'Item Rulesets'
+L.RuleSettingsDesc = 'These settings allow you to choose which item rulesets to display and in which order.'

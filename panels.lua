@@ -4,9 +4,8 @@
 --]]
 
 local CONFIG, Config = ...
-local ADDON = GetAddOnMetadata(CONFIG, 'X-Dependencies')
+local ADDON, Addon = Config.addon, _G[Config.addon]
 local L = LibStub('AceLocale-3.0'):GetLocale(CONFIG)
-local Addon = _G[ADDON]
 
 local SLOT_COLOR_TYPES = {}
 for id, name in pairs(Addon.BAG_TYPES) do
@@ -16,6 +15,7 @@ end
 sort(SLOT_COLOR_TYPES)
 tinsert(SLOT_COLOR_TYPES, 1, 'normal')
 
+local Expanded = {}
 local SetProfile = function(profile)
 	Addon:SetProfile(profile)
 	Addon.profile = Addon:GetProfile()
@@ -58,24 +58,8 @@ Addon.GeneralOptions = Addon.Options:NewPanel(nil, ADDON, L.GeneralDesc, functio
 end)
 
 Addon.FrameOptions = Addon.Options:NewPanel(ADDON, L.FrameSettings, L.FrameSettingsDesc, function(self)
-	local frames = self:Create('Dropdown')
-	frames:SetLabel(L.Frame)
-	frames:SetValue(self.frameID)
-	frames:AddLine('inventory', INVENTORY_TOOLTIP)
-	frames:AddLine('bank', BANK)
-	frames:SetCall('OnInput', function(_, v)
-		self.frameID = v
-	end)
-	
-	if GetAddOnEnableState(UnitName('player'), ADDON .. '_GuildBank') >= 2 then
-		frames:AddLine('guild', GUILD_BANK)
-	end
-	
-	if GetAddOnEnableState(UnitName('player'), ADDON .. '_VoidStorage') >= 2 then
-		frames:AddLine('vault', VOID_STORAGE)
-	end
-
 	self.sets = Addon.profile[self.frameID]
+	self:CreateFramesDropdown()
 	self:CreateCheck('enabled'):SetDisabled(self.frameID ~= 'inventory' and self.frameID ~= 'bank')
 
 	if self.sets.enabled then
@@ -176,4 +160,54 @@ Addon.ColorOptions = Addon.Options:NewPanel(ADDON, L.ColorSettings, L.ColorSetti
 	end
 
 	self:CreatePercentSlider('glowAlpha', 1, 100):SetWidth(585)
+end)
+
+Addon.RulesOptions = Addon.Options:NewPanel(ADDON, L.RuleSettings, L.RuleSettingsDesc, function(self)
+	self.sets = Addon.profile[self.frameID]
+	self:CreateFramesDropdown()
+
+	self:CreateFauxScroll(13, 26, function(self)
+		local entries = {}
+		for _,parent in Addon.Rules:IterateParents() do
+			tinsert(entries, parent)
+
+			if Expanded[parent.id] then
+				for _,child in pairs(parent.children) do
+					tinsert(entries, child)
+				end
+			end
+		end
+		self:SetNumEntries(#entries)
+
+		for i = self:FirstEntry(), self:LastEntry() do
+			local rule = entries[i]
+			local id, isSub = rule.id, rule.id:find('/')
+
+			local button = self:Create(isSub and 'Check' or 'ExpandCheck')
+			button:SetChecked(not self.sets.hiddenRules[id])
+			button:SetLabel(rule.icon and format('|T%s:%d|t %s', rule.icon, 26, rule.name) or rule.name)
+			button.left = button.left + (isSub and 24 or 0)
+			button:SetCall('OnClick', function()
+				if self.sets.hiddenRules[id] then
+					tinsert(self.sets.rules, id)
+				else
+					for i, rule in ipairs(self.sets.rules) do
+						if rule == id then
+							tremove(self.sets.rules, i)
+						end
+					end
+				end
+
+			 	self.sets.hiddenRules[id] = not self.sets.hiddenRules[id]
+				Addon:UpdateFrames()
+			end)
+
+			if not isSub then
+				button:SetExpanded(Expanded[rule.id])
+				button:SetCall('OnExpand', function(button, v)
+					Expanded[rule.id] = v
+				end)
+			end
+		end
+	end).top = 10
 end)
