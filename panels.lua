@@ -42,7 +42,7 @@ Addon.GeneralOptions = Addon.Options:NewPanel(nil, ADDON, L.GeneralDesc, functio
 	if Config.fading then
 		self:CreateCheck('fading')
 	end
-	
+
 	self:CreateCheck('displayBlizzard', ReloadUI)
 
 	local global = self:Create('Check')
@@ -50,7 +50,7 @@ Addon.GeneralOptions = Addon.Options:NewPanel(nil, ADDON, L.GeneralDesc, functio
 	global:SetValue(Addon:GetSpecificProfile())
 	global:SetCall('OnInput', function(_, v)
 		if Addon:GetSpecificProfile() then
-			StaticPopup_Show(CONFIG .. '_ConfirmGlobals')	
+			StaticPopup_Show(CONFIG .. '_ConfirmGlobals')
 		else
 			SetProfile(CopyTable(Addon.sets.global))
 		end
@@ -73,7 +73,7 @@ Addon.FrameOptions = Addon.Options:NewPanel(ADDON, L.FrameSettings, L.FrameSetti
 					row:CreateCheck('bagFrame')
 					row:CreateCheck('sort')
 				end
-				
+
 				row:CreateCheck('search')
 				row:CreateCheck('options')
 				row:CreateCheck('broker')

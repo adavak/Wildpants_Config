@@ -79,11 +79,11 @@ function Options:CreateFramesDropdown()
 	drop:SetCall('OnInput', function(_, v)
 		self.frameID = v
 	end)
-	
+
 	if GetAddOnEnableState(UnitName('player'), ADDON .. '_GuildBank') >= 2 then
 		drop:AddLine('guild', GUILD_BANK)
 	end
-	
+
 	if GetAddOnEnableState(UnitName('player'), ADDON .. '_VoidStorage') >= 2 then
 		drop:AddLine('vault', VOID_STORAGE)
 	end
@@ -164,12 +164,4 @@ function Options:CreateInput(type, arg)
 	end
 
 	return child
-end
-
-
---[[ External API ]]--
-
-function Options:Open()
-	InterfaceOptionsFrame_OpenToCategory(self:GetParent())
-	InterfaceOptionsFrame_OpenToCategory(self:GetParent())
 end
