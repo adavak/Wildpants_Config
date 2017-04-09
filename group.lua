@@ -40,6 +40,14 @@ function Options:OnUpdate()
 end
 
 
+--[[ External API ]]--
+
+function Options:Open()
+ InterfaceOptionsFrame_OpenToCategory(self:GetParent())
+ InterfaceOptionsFrame_OpenToCategory(self:GetParent())
+end
+
+
 --[[ Widgets ]]--
 
 function Options:CreateHeader(text, font, underline)
